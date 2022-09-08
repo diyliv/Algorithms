@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"unsafe"
 )
 
 type Resp struct {
@@ -13,7 +14,7 @@ type Resp struct {
 	SecondIndex int
 }
 
-func FoundTheFastest(arr []int) Resp {
+func FoundTheFastest(arr []*Array) Resp {
 	var temp, firstLargest, firstIndex, secondLargest, secondIndex int
 	var flag bool
 
@@ -54,12 +55,12 @@ func main() {
 	fmt.Printf("Enter Length Of The Array: ")
 	fmt.Scanln(&length)
 
-	arr := make([]int, length)
+	arr := array_create(uint32(length), func(p unsafe.Pointer) {})
 
 	rand.Seed(time.Now().UnixNano())
 
-	for i := range arr {
-		arr[i] = rand.Intn(100)
+	for i := 0; i < length; i++ {
+		array_set(arr, uint32(i), rand.Intn(100))
 	}
 	fmt.Println(arr)
 	FoundTheFastest(arr)
